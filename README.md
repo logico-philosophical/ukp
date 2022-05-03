@@ -1,5 +1,7 @@
 # `ukp`
 
+[![npm](https://img.shields.io/npm/v/ukp)](https://www.npmjs.com/package/ukp)
+
 Solve the [unbounded knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem#Definition) and its dual version.
 
 The original UKP tries to find the maximum value of Σ <i>v</i><sub><i>i</i></sub> <i>x</i><sub><i>i</i></sub> subject to Σ <i>w</i><sub><i>i</i></sub> <i>x</i><sub><i>i</i></sub> ≤ <i>W</i>, and the dual version tries to find the minimum value of Σ <i>v</i><sub><i>i</i></sub> <i>x</i><sub><i>i</i></sub> subject to Σ <i>w</i><sub><i>i</i></sub> <i>x</i><sub><i>i</i></sub> ≥ <i>W</i>, where
