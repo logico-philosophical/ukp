@@ -1,0 +1,23 @@
+{
+  "name": "ukp",
+  "version": "0.1.0",
+  "description": "Solve the unbounded knapsack problem and its dual version",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logico-philosophical/ukp.git"
+  },
+  "keywords": [
+    "knapsack-problem",
+    "knapsack"
+  ],
+  "author": "logico-philosophical",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logico-philosophical/ukp/issues"
+  },
+  "homepage": "https://github.com/logico-philosophical/ukp#readme"
+}
