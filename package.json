@@ -4,7 +4,7 @@
   "description": "Solve the unbounded knapsack problem and its dual version",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/logico-philosophical/ukp/issues"
   },
-  "homepage": "https://github.com/logico-philosophical/ukp#readme"
+  "homepage": "https://github.com/logico-philosophical/ukp#readme",
+  "devDependencies": {
+    "mocha": "^10.0.0",
+    "nyc": "^15.1.0"
+  }
 }
