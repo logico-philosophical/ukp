@@ -110,63 +110,48 @@ function ukp(W, items) {
 			value: Infinity
 		};
 	}
-	
-	function recurse(currentCounts, currentNetWeight, currentNetValue, itemsStartIndex) {
-		if (currentNetWeight > W) {
-			return false;
-		}
-	
-		var optimum = false;
-	
-		for (var i = itemsStartIndex; i < items.length; i++) {
-			var {name, weight, value, count} = items[i];
-			if (count == 0) continue;
 
-			currentCounts[name] = (name in currentCounts ? currentCounts[name] : 0) + 1;
-			items[i].count--;
+	var cache = {};
 
-			var candidate = recurse(
-				currentCounts,
-				currentNetWeight + weight,
-				currentNetValue + value,
-				i
-			);
+	function recurse(W) {
+		if (W in cache) return cache[W];
+		
+		var optimum = {
+			counts: {},
+			weight: 0,
+			value: 0
+		};
 
-			currentCounts[name]--;
-			items[i].count++;
+		for (var item of items) {
+			if (item.count <= 0) continue;
 
-			if (!candidate) continue;
-	
-			if (!optimum
-					|| optimum.netValue < candidate.netValue
-					|| optimum.netValue == candidate.netValue
-						&& optimum.netWeight > candidate.netWeight) {
-				optimum = candidate;
-			}
-		}
+			if (item.weight <= W) {
+				item.count--;
+				var {counts: counts_, weight, value} = recurse(W - item.weight);
+				item.count++;
 
-		if (!optimum) {
-			optimum = {netCounts: {}, netWeight: currentNetWeight, netValue: currentNetValue};
+				var counts = {};
+				for (var name in counts_) {
+					counts[name] = counts_[name];
+				}
 
-			for (var name in currentCounts) {
-				if (currentCounts[name] > 0) {
-					optimum.netCounts[name] = currentCounts[name];
+				counts[item.name] = (item.name in counts ? counts[item.name] : 0) + 1;
+
+				weight += item.weight;
+				value += item.value;
+
+				if (optimum.value < value
+						|| optimum.value == value
+							&& optimum.weight > weight) {
+					optimum = {counts, weight, value};
 				}
 			}
 		}
-	
-		return optimum;
+
+		return cache[W] = optimum;
 	}
 
-	var ret = recurse({}, 0, 0, 0);
-
-	if (!ret) return false;
-
-	return {
-		counts: ret.netCounts,
-		weight: ret.netWeight,
-		value: ret.netValue
-	};
+	return recurse(W);
 }
 
 function dual(W, items) {
@@ -197,64 +182,62 @@ function dual(W, items) {
 		};
 	}
 
-	function recurse(currentCounts, currentNetWeight, currentNetValue, itemsStartIndex) {
-		if (currentNetWeight >= W) {
-			var ret = {netCounts: {}, netWeight: currentNetWeight, netValue: currentNetValue};
+	var cache = {};
 
-			for (var name in currentCounts) {
-				if (currentCounts[name] > 0) {
-					ret.netCounts[name] = currentCounts[name];
+	function recurse(W) {
+		if (W in cache) return cache[W];
+		
+		var optimum = W == 0
+			? {
+				counts: {},
+				weight: 0,
+				value: 0
+			}
+			: false;
+
+		for (var item of items) {
+			if (item.count <= 0) continue;
+
+			var candidate;
+
+			if (item.weight >= W) {
+				candidate = {
+					counts: {
+						[item.name]: 1
+					},
+					weight: item.weight,
+					value: item.value
+				};
+			} else {
+				item.count--;
+				var {counts: counts_, weight, value} = recurse(W - item.weight);
+				item.count++;
+
+				var counts = {};
+				for (var name in counts_) {
+					counts[name] = counts_[name];
 				}
+
+				counts[item.name] = (item.name in counts ? counts[item.name] : 0) + 1;
+
+				weight += item.weight;
+				value += item.value;
+
+				candidate = {counts, weight, value};
 			}
 
-			return ret;
-		}
-
-		if (itemsStartIndex == items.length) {
-			return false;
-		}
-	
-		var optimum = false;
-	
-		for (var i = itemsStartIndex; i < items.length; i++) {
-			var {name, weight, value, count} = items[i];
-			if (count == 0) continue;
-
-			currentCounts[name] = (name in currentCounts ? currentCounts[name] : 0) + 1;
-			items[i].count--;
-
-			var candidate = recurse(
-				currentCounts,
-				currentNetWeight + weight,
-				currentNetValue + value,
-				i
-			);
-
-			currentCounts[name]--;
-			items[i].count++;
-
-			if (!candidate) continue;
-	
 			if (!optimum
-					|| optimum.netValue > candidate.netValue
-					|| optimum.netValue == candidate.netValue
-						&& optimum.netWeight < candidate.netWeight) {
+					|| optimum.value > candidate.value
+					|| optimum.value == candidate.value
+						&& optimum.weight < candidate.weight) {
 				optimum = candidate;
 			}
 		}
-	
-		return optimum;
+
+		return cache[W] = optimum;
 	}
 
-	var ret = recurse({}, 0, 0, 0);
-
-	if (!ret) return false;
-
-	return {
-		counts: ret.netCounts,
-		weight: ret.netWeight,
-		value: ret.netValue
-	};
+	return recurse(W);
 }
 
 ukp.dual = dual;
