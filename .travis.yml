@@ -1,0 +1,22 @@
+language: node_js
+
+os: linux
+dist: xenial
+
+node_js:
+  - lts/*
+
+install:
+  - npm ci
+
+script:
+  - npm test
+
+after_success: npm run coverage
+
+notifications:
+  email:
+    recipients:
+      - ossia@korea.ac.kr
+    on_success: change
+    on_failure: always
