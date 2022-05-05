@@ -1,6 +1,7 @@
 # `ukp`
 
 [![npm](https://img.shields.io/npm/v/ukp)](https://www.npmjs.com/package/ukp)
+[![Coverage Status](https://img.shields.io/coveralls/github/logico-philosophical/ukp)](https://coveralls.io/github/logico-philosophical/ukp?branch=master)
 
 Solve the [unbounded knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem#Definition) and its dual version.
 
