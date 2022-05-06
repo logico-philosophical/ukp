@@ -23,7 +23,6 @@ npm install ukp
 ```js
 var ukp = require('ukp');
 
-
 ukp(11, [
     {name: 'a', weight: 2, value: 10, count: 2},
     // `count` defaults to Infinity if omitted
