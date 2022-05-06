@@ -4,10 +4,10 @@ function createJsonErrorMessage(message, object) {
 	try {
 		json = JSON.stringify(object);
 	} catch(e) {
-		throw Error(message);
+		return message;
 	}
 	
-	throw Error(`${message}: ${json}`);
+	return `${message}: ${json}`;
 }
 
 function checkW(W) {
