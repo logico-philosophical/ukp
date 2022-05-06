@@ -2,12 +2,94 @@ var assert = require('assert');
 var ukp = require('..');
 
 describe('Input validation', function () {
+	it(`ukp() throws`, function () {
+		assert.throws(() => ukp());
+	});
+
+	it(`ukp.dual() throws`, function () {
+		assert.throws(() => ukp.dual());
+	});
+
 	it('ukp(-1, []) throws', function () {
 		assert.throws(() => ukp(-1, []));
 	});
 
 	it('ukp.dual(-1, []) throws', function () {
 		assert.throws(() => ukp.dual(-1, []));
+	});
+
+	it ('ukp(0) throws', function () {
+		assert.throws(() => ukp(0));
+	});
+
+	it ('ukp.dual(0) throws', function () {
+		assert.throws(() => ukp.dual(0));
+	});
+
+	it ('ukp(0, [[]]) throws', function () {
+		assert.throws(() => ukp(0, [[]]));
+	});
+
+	it ('ukp.dual(0, [[]]) throws', function () {
+		assert.throws(() => ukp.dual(0, [[]]));
+	});
+
+	it ('ukp(0, [{}]) throws', function () {
+		assert.throws(() => ukp(0, [{}]));
+	});
+
+	it ('ukp.dual(0, [{}]) throws', function () {
+		assert.throws(() => ukp.dual(0, [{}]));
+	});
+
+	it ('ukp(0, [0]) throws', function () {
+		assert.throws(() => ukp(0, [0]));
+	});
+
+	it ('ukp.dual(0, [0]) throws', function () {
+		assert.throws(() => ukp.dual(0, [0]));
+	});
+
+	it ('ukp(0, [[Circular]]) throws', function () {
+		var a = []; a.push(a);
+		assert.throws(() => ukp(0, a));
+	});
+
+	it ('ukp.dual(0, [[Circular]]) throws', function () {
+		var a = []; a.push(a);
+		assert.throws(() => ukp.dual(0, a));
+	});
+
+	it (`ukp(0, [['a', -1, 0]]) throws`, function () {
+		assert.throws(() => ukp(0, [['a', -1, 0]]));
+	});
+
+	it (`ukp.dual(0, [['a', -1, 0]]) throws`, function () {
+		assert.throws(() => ukp.dual(0, [['a', -1, 0]]));
+	});
+
+	it (`ukp(0, [['a', 0, -1]]) throws`, function () {
+		assert.throws(() => ukp(0, [['a', 0, -1]]));
+	});
+
+	it (`ukp.dual(0, [['a', 0, -1]]) throws`, function () {
+		assert.throws(() => ukp.dual(0, [['a', 0, -1]]));
+	});
+
+	it (`ukp(0, [['a', 0, 0, -1]]) throws`, function () {
+		assert.throws(() => ukp(0, [['a', 0, 0, -1]]));
+	});
+
+	it (`ukp.dual(0, [['a', 0, 0, -1]]) throws`, function () {
+		assert.throws(() => ukp.dual(0, [['a', 0, 0, -1]]));
+	});
+
+	it (`ukp(0, [['a', 0, 0], ['a', 0, 0]]) throws`, function () {
+		assert.throws(() => ukp(0, [['a', 0, 0], ['a', 0, 0]]));
+	});
+
+	it (`ukp.dual(0, [['a', 0, 0], ['a', 0, 0]]) throws`, function () {
+		assert.throws(() => ukp.dual(0, [['a', 0, 0], ['a', 0, 0]]));
 	});
 });
 
