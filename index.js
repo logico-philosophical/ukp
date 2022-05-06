@@ -74,8 +74,6 @@ function normalizeItem(item) {
 }
 
 function normalizeItems(items) {
-	if (typeof items == 'undefined' || items == false) return [];
-
 	if (!(items instanceof Array)) {
 		throw Error(createJsonErrorMessage('Invalid items', items));
 	}
