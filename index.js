@@ -2,7 +2,13 @@ function createJsonErrorMessage(message, object) {
 	var json;
 
 	try {
-		json = JSON.stringify(object);
+		json = JSON.stringify(object, (k, v) => {
+			if (typeof v == 'number' && !Number.isFinite(v)) {
+				return `<${v}>`;
+			}
+
+			return v;
+		});
 	} catch(e) {
 		return message;
 	}
