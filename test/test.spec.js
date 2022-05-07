@@ -167,6 +167,38 @@ describe('Some edge cases', function () {
 	});
 });
 
+describe('Sanity checks', function () {
+	it('ukp: item count is not exceeded', function () {
+		[
+			[['a', 2, 4, 3], ['b', 2, 2]],
+			[['b', 2, 2], ['a', 2, 4, 3]]
+		].forEach(items => {
+			var {counts} = ukp(10, items);
+		
+			for (var item of items) {
+				if (item.length >= 4 && item[0] in counts) {
+					assert(counts[item[0]] <= item[3]);
+				}
+			}
+		});
+	});
+
+	it('ukp.dual: item count is not exceeded', function () {
+		[
+			[['a', 2, 2, 3], ['b', 2, 4]],
+			[['b', 2, 4], ['a', 2, 2, 3]]
+		].forEach(items => {
+			var {counts} = ukp.dual(10, items);
+		
+			for (var item of items) {
+				if (item.length >= 4 && item[0] in counts) {
+					assert(counts[item[0]] <= item[3]);
+				}
+			}
+		});
+	});
+});
+
 describe('Cases from the readme file', function () {
 	it('ukp', function () {
 		assert.deepStrictEqual(

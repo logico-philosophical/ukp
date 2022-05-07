@@ -87,6 +87,39 @@ function normalizeItems(items) {
 	return items;
 }
 
+function getCache(cache, W, itemCounts) {
+	if (!(W in cache)) return false;
+
+	var ret = cache[W];
+
+	for (var count of itemCounts) {
+		if (count == Infinity) continue;
+		if (!(count in ret)) return false;
+		ret = ret[count];
+	}
+
+	return ret;
+}
+
+function setCache(cache, W, itemCounts, value) {
+	var target = cache;
+	if (!(W in target)) target[W] = {};
+
+	var parent = target;
+	var targetIndex = W;
+	target = target[W];
+
+	for (var count of itemCounts) {
+		if (count == Infinity) continue;
+		if (!(count in target)) target[count] = {};
+		parent = target;
+		targetIndex = count;
+		target = target[count];
+	}
+
+	return parent[targetIndex] = value;
+}
+
 function ukp(W, items) {
 	if (!checkW(W)) {
 		throw Error(createJsonErrorMessage('Invalid W', W));
@@ -115,10 +148,12 @@ function ukp(W, items) {
 		};
 	}
 
+	var itemCounts = items.map(({count}) => count);
 	var cache = {};
 
 	function recurse(W) {
-		if (W in cache) return cache[W];
+		var theCache = getCache(cache, W, itemCounts);
+		if (theCache) return theCache;
 		
 		var optimum = {
 			counts: {},
@@ -126,13 +161,15 @@ function ukp(W, items) {
 			value: 0
 		};
 
-		for (var item of items) {
-			if (item.count <= 0) continue;
+		for (var i = 0; i < items.length; i++) {
+			var item = items[i];
+
+			if (itemCounts[i] <= 0) continue;
 
 			if (item.weight <= W) {
-				item.count--;
+				itemCounts[i]--;
 				var {counts: counts_, weight, value} = recurse(W - item.weight);
-				item.count++;
+				itemCounts[i]++;
 
 				var counts = {};
 				for (var name in counts_) {
@@ -152,7 +189,7 @@ function ukp(W, items) {
 			}
 		}
 
-		return cache[W] = optimum;
+		return setCache(cache, W, itemCounts, optimum);
 	}
 
 	return recurse(W);
@@ -186,10 +223,12 @@ function dual(W, items) {
 		};
 	}
 
+	var itemCounts = items.map(({count}) => count);
 	var cache = {};
 
 	function recurse(W) {
-		if (W in cache) return cache[W];
+		var theCache = getCache(cache, W, itemCounts);
+		if (theCache) return theCache;
 		
 		var optimum = W == 0
 			? {
@@ -198,9 +237,11 @@ function dual(W, items) {
 				value: 0
 			}
 			: false;
+		
+		for (var i = 0; i < items.length; i++) {
+			var item = items[i];
 
-		for (var item of items) {
-			if (item.count <= 0) continue;
+			if (itemCounts[i] <= 0) continue;
 
 			var candidate;
 
@@ -213,9 +254,9 @@ function dual(W, items) {
 					value: item.value
 				};
 			} else {
-				item.count--;
+				itemCounts[i]--;
 				var {counts: counts_, weight, value} = recurse(W - item.weight);
-				item.count++;
+				itemCounts[i]++;
 
 				var counts = {};
 				for (var name in counts_) {
@@ -238,7 +279,7 @@ function dual(W, items) {
 			}
 		}
 
-		return cache[W] = optimum;
+		return setCache(cache, W, itemCounts, optimum);
 	}
 
 	return recurse(W);

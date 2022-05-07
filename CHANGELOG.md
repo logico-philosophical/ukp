@@ -8,3 +8,8 @@
 
 * Runs in 𝒪(<i>W</i>) time, at least when I tested it with <i>n</i> = 9
 * May still be incorrect
+
+## v0.1.2
+
+* v0.1.1 is still incorrect so this version tries to fix that
+* May still be incorrect

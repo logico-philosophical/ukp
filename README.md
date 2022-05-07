@@ -10,7 +10,9 @@ The original UKP tries to find the maximum value of Σ <i>v</i><sub><i>i</i></su
  * <i>v</i><sub><i>i</i></sub> ≥ 0 is the value of the <i>i</i>-th item, and
  * <i>x</i><sub><i>i</i></sub> = 0, 1, 2, 3, … is the number of copies of the <i>i</i>-th item.
 
- This module solves both problems in 𝒪(<i>W</i>) time, for a fixed <i>n</i>. Whether it is 𝒪(<i>n</i>) for a fixed <i>W</i> or not is not tested (yet).
+When <i>x</i><sub><i>i</i></sub> is unbounded for all the items, this module solves both problems in 𝒪(<i>W</i>) time, for a fixed <i>n</i>. Whether it is 𝒪(<i>n</i>) for a fixed <i>W</i> or not is not tested (yet).
+
+Using this module you can also limit the number of copies of some items. However, due to bad optimization, this may drop the cache hit rate by a significant amout and affect the performance drastically.
 
 ## Usage
 
@@ -62,7 +64,7 @@ If the value is the same this function picks the one with a larger weight. Retur
 
 ## Limitations
 
-* The algorithm may not have been optimized properly so it may rather be slow.
+* The algorithm is not optimized properly so it may rather be slow.
 * Call stack may overflow if the recursion gets too deep.
 * Using non-integer values for the weights and the values may result in an incorrect answer.
-* This module is not thoroughly tested (yet) so the results may end up being incorrect. Be careful!
+* This module is not thoroughly tested (yet) so the results may even be incorrect. Be careful!
